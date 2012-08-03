@@ -13,7 +13,7 @@ Spec::describe('Member', '#token')->spec(
 
     Spec::it("generates a token upon login")->spec(function($member) {
         $token = $member->login('rightpassword');
-        return $token->should_be();
+        return $token->should->be();
     }),
 
     Spec::describe('negative tests')->spec(
