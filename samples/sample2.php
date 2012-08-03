@@ -20,7 +20,7 @@ describe('Bowling')->spec(
         })
     ),
     describe('#strike')->spec(
-        it("returns 'strike' if all 10 pins are down")->spec(function($member) {
+        it("returns 'strike' if all 10 pins are down")->spec(function($bowling) {
             $bowling->hit(10);
             $bowling->strike->should->be();
         })

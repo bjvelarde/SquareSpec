@@ -18,7 +18,7 @@ Spec::describe('Bowling')->spec(
         })
     ),
     Spec::describe('#strike')->spec(
-        Spec::it("returns 'strike' if all 10 pins are down")->spec(function($member) {
+        Spec::it("returns 'strike' if all 10 pins are down")->spec(function($bowling) {
             $bowling->hit(10);
             $bowling->strike->should->be();
         })
