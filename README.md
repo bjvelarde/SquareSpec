@@ -6,7 +6,7 @@ BDD Framework for the PHP Craftsman
 ```php
 use SquareSpec\Spec as Spec;
 
-Spec::describe('Member', 'token')->spec(
+Spec::describe('Member', '#token')->spec(
 
     Spec::before(function() {
         return array(
