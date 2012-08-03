@@ -31,7 +31,6 @@ class SpecLevel implements Testable {
      */ 
     public function __construct($desc) {
         $this->desc     = $desc;
-        $this->results  =
         $this->contexts =
         $this->subjects = array();
     }
@@ -75,58 +74,27 @@ class SpecLevel implements Testable {
      */    
     public function getDescription() { return $this->desc; }
     /**
-     * Run all test, store results for further evaluation
+     * Run all test
      *
      * @return array
      */
     public function test() {
         foreach ($this->contexts as $desc => $context) {
-            $this->results[$desc] = $context->test();
+             $context->test();
         }
-        return $this->results;
-    }
-    /**
-     * Evaluates results after a call to SpecLevel::test
-     *
-     * @return array
-     */
-    public function evaluate($results=NULL, $parent_data=array()) {
-        $results = $results ? $results : $this->results;
-        if ($parent_data) {
-            list($total, $success, $failures) = $parent_data;
-        } else {
-            $total = $success = 0;
-            $failures = array();
-        }
-        foreach ($results as $desc => $result) {           
-            if (is_array($result)) {
-                return $this->evaluate($result, array($total, $success, $failures));
-            } else {
-                if ($result) {
-                    $success++;
-                    echo '.';
-                } else {
-                    $failures[] = $desc;
-                    echo 'F';
-                }
-                $total++;
-            }
-        }
-        return array($total, $success, $failures);
     }
     /**
      * Run the test and evaluate, echo the results. NOTE: use only on the outer-most description layer. Do not call this on children contexts and descriptions
      */
     public function run() {
         $this->test();
-        list($total, $success, $failures) = $this->evaluate();
         echo "<br/>";
-        if ($failures) {
-            echo "Failures:<br/> -" . implode("<br/> -", $failures);
+        if (SpecSubject::$failures) {
+            echo "Failures(" . count(SpecSubject::$failures) . "):<br/> -" . implode("<br/> -", SpecSubject::$failures);
             echo "<br/>";
         }
-        echo "Success: $success<br/>";
-        echo "Total: $total";
+        echo "Success: " . SpecSubject::$success . "<br/>";
+        echo "Total: " . SpecSubject::$total;
     }
     /**
      * Wrap each subjects as SpecSubject objects

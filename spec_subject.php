@@ -10,6 +10,12 @@ namespace SquareSpec;
  * The Spec Subject. Meant to wrap any data so we can 'spec' on it.
  */
 class SpecSubject {
+    
+    public static $failures = array();
+    
+    public static $total = 0;
+    
+    public static $success = 0;
     /**
      * @var mixed The test subject
      */
@@ -72,10 +78,12 @@ class SpecSubject {
             $var = $args[0];
         }
         if (!isset($var)) {
-            return (isset($this->subject));
+            $return = (isset($this->subject));
         } else {
-            return $this->equals($var);
+            $return = $this->equals($var);
         }
+        $this->evaluate($return);
+        return $return;
     }
     /**
      * Test for non-existence or non-equivalence
@@ -89,10 +97,12 @@ class SpecSubject {
             $var = $args[0];
         }
         if (!isset($var)) {
-            return (!isset($this->subject));
+            $return = (!isset($this->subject));
         } else {
-            return $this->not_equals($var);
+            $return = $this->not_equals($var);
         }
+        $this->evaluate($return);
+        return $return;        
 	}
     /**
      * Test if value is greater than the subject
@@ -100,28 +110,44 @@ class SpecSubject {
      * @param numeric $var
      * @return bool
      */
-	public function be_greater_than($var) { return ($this->subject > $var);	}
+	public function be_greater_than($var) { 
+        $return = ($this->subject > $var);	
+        $this->evaluate($return);
+        return $return;        
+    }
     /**
      * Test if subject is less than the value
      *
      * @param numeric $var
      * @return bool
      */
-	public function be_less_than($var) { return ($this->subject < $var);	}
+	public function be_less_than($var) { 
+        $return = ($this->subject < $var);	
+        $this->evaluate($return);
+        return $return;        
+    }
     /**
      * Test if subject is greater than or equal to the value
      *
      * @param numeric $var
      * @return bool
      */
-	public function be_greater_than_or_equal_to($var) { return ($this->subject >= $var);	}
+	public function be_greater_than_or_equal_to($var) { 
+        $return = ($this->subject >= $var);	
+        $this->evaluate($return);
+        return $return;        
+    }
     /**
      * Test if subject is less than or equal to the value
      *
      * @param numeric $var
      * @return bool
      */
-	public function be_less_than_or_equal_to($var) { return ($this->subject <= $var);	}
+	public function be_less_than_or_equal_to($var) { 
+        $return = ($this->subject <= $var);	
+        $this->evaluate($return);
+        return $return;        
+    }
     /**
      * Test if subject is in a container...or equivalence for scalar subjects
      *
@@ -130,10 +156,12 @@ class SpecSubject {
      */	
 	public function have($var) {
 	    if (is_array($this->subject)) {
-		    return in_array($var, $this->subject);
+		    $return = in_array($var, $this->subject);
 		} else {
-		    return $this->equals($var);
+		    $return = $this->equals($var);
 		}
+        $this->evaluate($return);
+        return $return;        
 	}
     /**
      * Test if subject starts with the string provided
@@ -142,7 +170,31 @@ class SpecSubject {
      * @return bool
      */		
 	public function start_with($str) {
-	    return (is_string($str) && (strpos($this->subject, $str) === 0));
+	    $return = (is_string($str) && (strpos($this->subject, $str) === 0));
+        $this->evaluate($return);
+        return $return;        
 	}
+    /**
+     * Evaluate the returned value and store the results
+     *
+     * @param bool $return     
+     */
+    private function evaluate($return) {
+        if (!$return) {
+            $dbt = array_reverse(debug_backtrace());
+            $desc = array();
+            foreach ($dbt as $bt) {
+                if ($bt['object'] instanceof Testable && $bt['function'] == 'test') {
+                    $desc[] = $bt['object']->getDescription();
+                }
+            }
+            self::$failures[] = implode(' ', $desc);
+            echo ' F ';
+        } else {
+            echo ' . ';
+            self::$success++;
+        }
+        self::$total++;
+    }    
 }
 ?>

@@ -1,29 +1,27 @@
 <?php
-include('../square/square_spec.php');
+include('../config/config.php');
 
 use SquareSpec\Spec as Spec;
 
-Spec::describe('Member', '#token')->spec(
-
+Spec::describe('Bowling')->spec(
     Spec::before(function() {
         return array(
-            'member' => new Member
+            'bowling' => new Bowling
         );
     }),
-
-    Spec::it("generates a token upon login")->spec(function($member) {
-        $token = $member->login('rightpassword');
-        return $token->should->be();
-    }),
-
-    Spec::describe('negative tests')->spec(
-
-        Spec::it("does not generate a token upon a failed login")->spec(function($member) {
-            $token = $member->login('wrongpassword');
-            return $token->should->not_be();
+    Spec::describe('#score')->spec(
+        Spec::it("returns 0 for all gutter game")->spec(function($bowling) {
+            for ($i = 0; $i < 20; $i++) {
+                $bowling->hit(0);
+            }
+            $bowling->score->should->equals(0);
         })
-
+    ),
+    Spec::describe('#strike')->spec(
+        Spec::it("returns 'strike' if all 10 pins are down")->spec(function($member) {
+            $bowling->hit(10);
+            $bowling->strike->should->be();
+        })
     )
-
 )->run();
 ?>
