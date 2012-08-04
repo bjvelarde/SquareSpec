@@ -12,6 +12,8 @@ use \ReflectionFunction as ReflectionFunction;
  * --- proove perpendiculars :) , if you don't get it, nevermind ;)
  */
 class SpecPlumb implements Testable {
+
+    use Describable;
     /**
      * @var string The description text
      */
@@ -88,7 +90,7 @@ class SpecPlumb implements Testable {
      *
      * @return string
      */   
-    public function getDescription() { return $this->desc; }
+    //public function getDescription() { return $this->desc; }
 
 }
 ?>

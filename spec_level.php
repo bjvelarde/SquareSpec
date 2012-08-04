@@ -11,6 +11,8 @@ namespace SquareSpec;
  * --- proove horizontals :) , if you don't get it, nevermind ;)
  */
 class SpecLevel implements Testable {
+
+    use Describable;
     /**
      * @var string The description text
      */
@@ -72,7 +74,7 @@ class SpecLevel implements Testable {
      *
      * @return string
      */    
-    public function getDescription() { return $this->desc; }
+    //public function getDescription() { return $this->desc; }
     /**
      * Run all test
      *
@@ -82,19 +84,6 @@ class SpecLevel implements Testable {
         foreach ($this->contexts as $desc => $context) {            
             $context->test();
         }
-    }
-    /**
-     * Run the test and evaluate, echo the results. NOTE: use only on the outer-most description layer. Do not call this on children contexts and descriptions
-     */
-    public function run() {
-        $this->test();
-        echo "<br/>";
-        if (SpecSubject::$failures) {
-            echo "Failures(" . count(SpecSubject::$failures) . "):<br/> -" . implode("<br/> -", SpecSubject::$failures);
-            echo "<br/>";
-        }
-        echo "Success: " . SpecSubject::$success . "<br/>";
-        echo "Total: " . SpecSubject::$total;
     }
     /**
      * Wrap each subjects as SpecSubject objects

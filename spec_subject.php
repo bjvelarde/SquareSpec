@@ -197,9 +197,9 @@ class SpecSubject {
                 }
             }
             self::$failures[] = implode(' ', $desc);
-            echo ' F ';
+            echo 'F ';
         } else {
-            echo ' . ';
+            echo '. ';
             self::$success++;
         }
         self::$total++;

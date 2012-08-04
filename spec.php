@@ -9,7 +9,9 @@ namespace SquareSpec;
 /**
  * Mostly contains the wrapper functions for other Spec classes
  */
-final class Spec {   
+final class Spec {
+
+    use StaticClass;
     /**
      * Wraps a spec description
      *
@@ -48,11 +50,7 @@ final class Spec {
      * @param mixed $obj The test subject
      * @return SpecSubject
      */    
-    public static function expect($obj) { return new SpecSubject($obj); }
-    
-    private function __construct() {}
-    
-    private function __clone() {}
+    public static function expect($obj) { return new SpecSubject($obj); } 
 
 }
 ?>
