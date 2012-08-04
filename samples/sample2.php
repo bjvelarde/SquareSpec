@@ -2,7 +2,10 @@
 //--------------------------------------------------------------------------------------------------------------------------------
 // 
 //    From console, run: $> php square.php  
-//    to run all <spec-name>.specs.php files on your designated 'specs' folder (see: square.php)
+//    to test all <spec-name>.specs.php files on your designated 'specs' folder (see: square.php)
+//
+//    To test a single spec: $>php square.php <my-spec>
+//    to test <my-spec>.specs.php
 //
 //--------------------------------------------------------------------------------------------------------------------------------
 include('../square_spec.php');
