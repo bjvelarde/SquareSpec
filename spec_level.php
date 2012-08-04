@@ -79,8 +79,8 @@ class SpecLevel implements Testable {
      * @return array
      */
     public function test() {
-        foreach ($this->contexts as $desc => $context) {
-             $context->test();
+        foreach ($this->contexts as $desc => $context) {            
+            $context->test();
         }
     }
     /**
@@ -103,7 +103,7 @@ class SpecLevel implements Testable {
      */
     private function wrapSubjects(array $subjects) {
         foreach ($subjects as $k => $subject) {
-            $subjects[$k] = new SpecSubject($subject);
+            $subjects[$k] = ($subject instanceof SpecSubject) ? $subject : new SpecSubject($subject);
         }
         return $subjects;
     }

@@ -27,36 +27,29 @@ final class Spec {
      * @param string $context Context description
      * @return SpecPlumb
      */
-    public static function it($context) {
-        return new SpecPlumb($context);
-    }
+    public static function it($context) {  return new SpecPlumb($context);  }
     /**
      * For setting up the spec subjects
      *
      * @param callback $callback Context description
      * @return array
      */
-    public static function before($callback) {
-        return $callback();
-    }
+    public static function before($callback) { return $callback();  }
     /**
      * Wrap a spec double
      *
      * @param mixed $obj The mocked object
      * @return SpecDouble
      */    
-    public static function double($obj) {
-        return new SpecDouble($obj);
-    }
+    public static function double($obj) { return new SpecDouble($obj); }
     /**
      * Wrap a spec subject
      *
      * @param mixed $obj The test subject
      * @return SpecSubject
      */    
-    public static function expect($obj) {
-        return new SpecSubject($obj);
-    }    
+    public static function expect($obj) { return new SpecSubject($obj); }
+    
     private function __construct() {}
     
     private function __clone() {}

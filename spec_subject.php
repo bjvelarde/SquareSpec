@@ -47,10 +47,10 @@ class SpecSubject {
 	
 	public function __call($method, $args) {
 	    if (is_object($this->subject) && method_exists($this->subject, $method)) {
-		    $ret = call_user_func_array(array($this->subject, $method), $args);
-			return new self($ret);
-		}
-		return new self;
+		    $ret = call_user_func_array(array($this->subject, $method), $args);           
+			return $ret ? new self($ret) : $this;
+		}        
+		return $this;
 	}
     /**
      * Test for equivalence
@@ -58,14 +58,22 @@ class SpecSubject {
      * @param mixed $var
      * @return bool
      */
-	public function equals($var) { return ($this->subject === $var); }
+	public function equals($var) { 
+        $return = ($this->subject === $var); 
+        $this->evaluate($return);
+        return $return;        
+    }
     /**
      * Test for non-equivalence
      *
      * @param mixed $var
      * @return bool
      */
-	public function not_equals($var) { return !$this->equals($var); }
+	public function not_equals($var) { 
+        $return = !$this->equals($var); 
+        $this->evaluate($return);
+        return $return;        
+    }
     /**
      * Test for existence or equivalence
      *
