@@ -59,7 +59,7 @@ class SpecSubject {
      * @return bool
      */
 	public function equals($var) { 
-        $return = ($this->subject === $var); 
+        $return = $this->_equals($var); 
         $this->evaluate($return);
         return $return;        
     }
@@ -70,7 +70,7 @@ class SpecSubject {
      * @return bool
      */
 	public function not_equals($var) { 
-        $return = !$this->equals($var); 
+        $return = $this->_not_equals($var); 
         $this->evaluate($return);
         return $return;        
     }
@@ -88,7 +88,7 @@ class SpecSubject {
         if (!isset($var)) {
             $return = (isset($this->subject));
         } else {
-            $return = $this->equals($var);
+            $return = $this->_equals($var);
         }
         $this->evaluate($return);
         return $return;
@@ -107,7 +107,7 @@ class SpecSubject {
         if (!isset($var)) {
             $return = (!isset($this->subject));
         } else {
-            $return = $this->not_equals($var);
+            $return = $this->_not_equals($var);
         }
         $this->evaluate($return);
         return $return;        
@@ -166,7 +166,7 @@ class SpecSubject {
 	    if (is_array($this->subject)) {
 		    $return = in_array($var, $this->subject);
 		} else {
-		    $return = $this->equals($var);
+		    $return = $this->_equals($var);
 		}
         $this->evaluate($return);
         return $return;        
@@ -203,6 +203,16 @@ class SpecSubject {
             self::$success++;
         }
         self::$total++;
-    }    
+    }  
+
+    public function _equals($var) { return ($this->subject === $var); }
+    /**
+     * Test for non-equivalence
+     *
+     * @param mixed $var
+     * @return bool
+     */
+	public function _not_equals($var) { return !$this->_equals($var); }
+    
 }
 ?>
