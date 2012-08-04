@@ -1,4 +1,10 @@
 <?php
+//--------------------------------------------------------------------------------------------------------------------------------
+// 
+//    From console, run: $> php square.php  
+//    to run all <spec-name>.specs.php files on your designated 'specs' folder (see: square.php)
+//
+//--------------------------------------------------------------------------------------------------------------------------------
 include('../config/config.php');
 
 use SquareSpec\Spec as Spec;
@@ -23,5 +29,5 @@ Spec::describe('Bowling')->spec(
             $bowling->strike->should->be();
         })
     )
-)->run();
+)->test();
 ?>
