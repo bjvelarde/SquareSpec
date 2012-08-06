@@ -57,7 +57,7 @@ final class Spec {
      * @param mixed $obj The test subject
      * @return SpecSubject
      */    
-    public static function expect($obj) { 
+    public static function expect($obj) {   
         $obj = ($obj instanceof SpecSubject) ? $obj->getSubject() : $obj;    
         return new SpecSubject($obj); 
     } 

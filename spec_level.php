@@ -34,7 +34,8 @@ class SpecLevel implements Testable {
         $this->desc     = $desc;
         $this->contexts =
         $this->subjects = array();
-    }
+    }    
+
     /**
      * The method to receive / wrap all the children descriptions and contexts
      *
