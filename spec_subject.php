@@ -8,10 +8,13 @@
 namespace SquareSpec;
 
 use \Exception as Exception;
+use \ArrayAccess as ArrayAccess;
+use \Countable as Countable;
+use \IteratorAggregate as IteratorAggregate;
 /**
  * The Spec Subject. Meant to wrap any data so we can 'spec' on it.
  */
-class SpecSubject {
+class SpecSubject implements IteratorAggregate, Countable, ArrayAccess {
     
     public static $failures = array();
     
@@ -48,7 +51,7 @@ class SpecSubject {
 	}
 	
 	public function __call($method, $args) {    
-	    if (is_object($this->subject) && method_exists($this->subject, $method)) {        
+	    if (is_object($this->subject)) { // && method_exists($this->subject, $method)) {        
             try {
 		        $ret = call_user_func_array(array($this->subject, $method), $args);           
 			    return $ret ? new self($ret) : $this;              
@@ -227,6 +230,36 @@ class SpecSubject {
      * @return bool
      */
 	public function _not_equals($var) { return !$this->_equals($var); }
-    
+    /**
+     * IteratorAggreate interface implementation
+     */
+    public function getIterator() { 
+        if (is_array($this->subject)) {
+            return new ArrayIterator($this->subject); 
+        } else {
+            throw new Exception('Subject is not an array');
+        }
+    } 
+
+    public function count() { return count($this->subject); }    
+    /**#@+
+     * ArrayAccess interface implementation
+     */
+    public function offsetExists($offset) { return is_array($this->subject) && isset($this->subject[$offset]); }
+
+    public function offsetGet($offset) { return new self((is_array($this->subject) && isset($this->subject[$offset])) ? $this->subject[$offset] : NULL); }
+
+    public function offsetSet($offset, $value) { 
+        if (is_array($this->subject)) {
+            $this->subject[$offset] = $value;
+        }
+    }
+
+    public function offsetUnset($offset) { 
+        if (is_array($this->subject)) {
+            unset($this->subject[$offset]);
+        }
+    }
+    /**#@-*/    
 }
 ?>
