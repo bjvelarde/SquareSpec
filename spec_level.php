@@ -12,7 +12,6 @@ namespace SquareSpec;
  */
 class SpecLevel implements Testable {
 
-    use Describable;
     /**
      * @var string The description text
      */
@@ -86,6 +85,12 @@ class SpecLevel implements Testable {
         }
     }
     /**
+     * Get the description
+     *
+     * @return string
+     */       
+    public function getDescription() { return $this->desc; }
+    /**
      * Wrap each subjects as SpecSubject objects
      *
      * @return array
@@ -95,6 +100,6 @@ class SpecLevel implements Testable {
             $subjects[$k] = ($subject instanceof SpecSubject) ? $subject : new SpecSubject($subject);
         }
         return $subjects;
-    }
+    }    
 }
 ?>

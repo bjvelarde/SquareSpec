@@ -6,6 +6,8 @@
  * @lincense http://opensource.org/licenses/PHP-3.0
  */
 namespace SquareSpec;
+
+use \Exception as Exception;
 /**
  * The Spec Subject. Meant to wrap any data so we can 'spec' on it.
  */
@@ -31,7 +33,7 @@ class SpecSubject {
     }
 
     public function __get($var) {
-        if ($var == 'should' || $var == 'to') {
+        if ($var == 'should' || $var == 'to' || $var == 'expect_to') {
             return $this;
         } elseif (is_object($this->subject)) {
 		    return new self($this->subject->{$var});
@@ -45,10 +47,14 @@ class SpecSubject {
 		}
 	}
 	
-	public function __call($method, $args) {
-	    if (is_object($this->subject) && method_exists($this->subject, $method)) {
-		    $ret = call_user_func_array(array($this->subject, $method), $args);           
-			return $ret ? new self($ret) : $this;
+	public function __call($method, $args) {    
+	    if (is_object($this->subject) && method_exists($this->subject, $method)) {        
+            try {
+		        $ret = call_user_func_array(array($this->subject, $method), $args);           
+			    return $ret ? new self($ret) : $this;              
+            } catch (Exception $e) {               
+                return new self($e);
+            }
 		}        
 		return $this;
 	}
@@ -182,6 +188,14 @@ class SpecSubject {
         $this->evaluate($return);
         return $return;        
 	}
+    
+    public function to_throw($exception='Exception') {
+        $return = ($this->subject instanceof $exception);
+        $this->evaluate($return);
+        return $return;         
+    }
+    
+    public function getSubject() { return $this->subject; }
     /**
      * Evaluate the returned value and store the results
      *
@@ -192,7 +206,7 @@ class SpecSubject {
             $dbt = array_reverse(debug_backtrace());
             $desc = array();
             foreach ($dbt as $bt) {
-                if ($bt['object'] instanceof Testable && $bt['function'] == 'test') {
+                if (isset($bt['object']) && $bt['object'] instanceof Testable && $bt['function'] == 'test') {
                     $desc[] = $bt['object']->getDescription();
                 }
             }

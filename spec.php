@@ -10,8 +10,6 @@ namespace SquareSpec;
  * Mostly contains the wrapper functions for other Spec classes
  */
 final class Spec {
-
-    use StaticClass;
     /**
      * Wraps a spec description
      *
@@ -33,10 +31,19 @@ final class Spec {
     /**
      * For setting up the spec subjects
      *
-     * @param callback $callback Context description
+     * @param SpecVar,... subject variables
      * @return array
      */
-    public static function before($callback) { return $callback();  }
+    public static function before() {
+        $args = func_get_args();
+        $subjects = array();
+        foreach ($args as $arg) {
+            if ($arg instanceof SpecVar) {
+                $subjects[$arg->name] = $arg->value;                
+            }
+        }
+        return $subjects;
+    }
     /**
      * Wrap a spec double
      *
@@ -50,7 +57,20 @@ final class Spec {
      * @param mixed $obj The test subject
      * @return SpecSubject
      */    
-    public static function expect($obj) { return new SpecSubject($obj); } 
-
+    public static function expect($obj) { 
+        $obj = ($obj instanceof SpecSubject) ? $obj->getSubject() : $obj;    
+        return new SpecSubject($obj); 
+    } 
+    /**
+     * Wrap a variable as SpecVar
+     *
+     * @param string $var The variable name
+     * @return SpecVar
+     */     
+    public static function let($var) { return new SpecVar($var); }
+    
+    private function __construct() {}
+    
+    private function __clone() {}
 }
 ?>

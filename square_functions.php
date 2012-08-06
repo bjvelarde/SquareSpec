@@ -30,10 +30,19 @@ function it($context) { return new SpecPlumb($context); }
 /**
  * For setting up the spec subjects
  *
- * @param callback $callback Context description
+ * @param SpecVar,... subject variables
  * @return array
  */
-function before($callback) { return $callback(); }
+function before() {
+    $args = func_get_args();
+    $subjects = array();
+    foreach ($args as $arg) {
+        if ($arg instanceof SpecVar) {
+            $subjects[$arg->name] = $arg->value;                
+        }
+    }
+    return $subjects;
+}
 /**
  * Wrap a spec double
  *
@@ -47,5 +56,15 @@ function double($obj) { return new SpecDouble($obj); }
  * @param mixed $obj The test subject
  * @return SpecSubject
  */    
-function expect($obj) { return new SpecSubject($obj); }    
+function expect($obj) { 
+    $obj = ($obj instanceof SpecSubject) ? $obj->getSubject() : $obj;    
+    return new SpecSubject($obj); 
+} 
+/**
+ * Wrap a variable as SpecVar
+ *
+ * @param string $var The variable name
+ * @return SpecVar
+ */ 
+function let($var) { return new SpecVar($var); }
 ?>

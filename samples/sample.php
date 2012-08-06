@@ -8,16 +8,32 @@
 //    to test <my-spec>.specs.php
 //
 //--------------------------------------------------------------------------------------------------------------------------------
-include('../config/config.php');
+/*
+GIVEN:
+
+class Bowling {    
+    public $score = 0;
+    public $strike = FALSE;
+    
+    public function hit($pins) {
+        if ($pins == 10) {
+            $this->strike = TRUE;
+            $this->score = $pins * 2;
+        } 
+        if ($pins) {
+            $this->score = $pins;
+        }
+    } 
+}
+*/
+include('../square_spec.php');
 
 use SquareSpec\Spec as Spec;
 
 Spec::describe('Bowling')->spec(
-    Spec::before(function() {
-        return array(
-            'bowling' => new Bowling
-        );
-    }),
+    Spec::before(
+        Spec::let('bowling')->be(new Bowling)
+    ),
     Spec::describe('#score')->spec(
         Spec::it("returns 0 for all gutter game")->spec(function($bowling) {
             for ($i = 0; $i < 20; $i++) {

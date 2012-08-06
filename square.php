@@ -1,7 +1,6 @@
 <?php
-require('traits.php');
-
-define('SPECS_DIR', '../specs/');
+define('REL_DIR', '../');
+define('SPECS_DIR', REL_DIR . 'specs/');
 
 use SquareSpec\SpecSubject as SpecSubject;
 
@@ -24,7 +23,7 @@ if (!isset($argv[1])) {
 if ($ok) {
     echo "\n";
     if (SpecSubject::$failures) {    
-        echo "Failed on: \n -" . implode("\n -", SpecSubject::$failures);
+        echo "\nFailed on: \n -" . implode("\n -", SpecSubject::$failures);
         echo "\n";
     }
     echo "\nFailures: " . count(SpecSubject::$failures) . "\n";

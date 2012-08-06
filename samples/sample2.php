@@ -8,12 +8,10 @@
 //    to test <my-spec>.specs.php
 //
 //--------------------------------------------------------------------------------------------------------------------------------
-include('../square_spec.php');
+/*
+GIVEN:
 
-use SquareSpec as SQ;
-
-class Bowling {
-    
+class Bowling {    
     public $score = 0;
     public $strike = FALSE;
     
@@ -27,14 +25,15 @@ class Bowling {
         }
     } 
 }
+*/
+include('../square_spec.php');
 
+use SquareSpec as SQ;
 
 SQ\describe('Bowling')->spec(
-    SQ\before(function() {
-        return array(
-            'bowling' => new Bowling
-        );
-    }),
+    SQ\before(
+        SQ\let('bowling')->be(new Bowling)
+    ),
     SQ\describe('#score')->spec(
         SQ\it("returns 0 for all gutter game")->spec(function($bowling) {
             for ($i = 0; $i < 20; $i++) {
