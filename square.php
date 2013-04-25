@@ -1,8 +1,9 @@
+#!/usr/bin/php
 <?php
-define('REL_DIR', '../');
-define('SPECS_DIR', REL_DIR . 'specs/');
+define('APP_ROOT', dirname(dirname(__FILE__)) . '/');
+define('SPECS_DIR', APP_ROOT . 'specs/');
 
-use SquareSpec\SpecSubject as SpecSubject;
+use SquareSpec\SpecSubject;
 
 $t1 = microtime(TRUE);
 
