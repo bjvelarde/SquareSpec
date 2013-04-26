@@ -6,12 +6,12 @@
  * @lincense http://opensource.org/licenses/PHP-3.0
  */
 namespace SquareSpec;
-use \ReflectionFunction as ReflectionFunction;
+use \ReflectionFunction;
 /**
  * The spec context 
  * --- proove perpendiculars :) , if you don't get it, nevermind ;)
  */
-class SpecPlumb implements Testable {
+class SpecContext implements Testable {
     /**
      * @var string The description text
      */
@@ -32,7 +32,7 @@ class SpecPlumb implements Testable {
      * Constructor
      *
      * @param string $desc The context description
-     * @return SpecPlumb
+     * @return SpecContext
      */ 
     public function __construct($desc) {
         $this->desc     = $desc;
@@ -44,9 +44,9 @@ class SpecPlumb implements Testable {
      * The method to receive the callback
      *
      * @param callback $callback 
-     * @return SpecPlumb
+     * @return SpecContext
      */
-    public function &spec($callback) {
+    public function &do($callback) {
         $this->callback = $callback;
         $r      = new ReflectionFunction($callback);
         $args   = $r->getParameters();

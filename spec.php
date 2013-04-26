@@ -14,20 +14,22 @@ final class Spec {
      * Wraps a spec description
      *
      * @param string $desc,... List of text descriptions
-     * @return SpecLevel
+     * @return SpecDescription
      */
     public static function describe() {
         $args = func_get_args();
         $desc = implode('>', $args);
-        return new SpecLevel($desc);
+        return new SpecDescription($desc);
     }
     /**
      * Wraps a spec context
      *
      * @param string $context Context description
-     * @return SpecPlumb
+     * @return SpecContext
      */
-    public static function it($context) {  return new SpecPlumb($context);  }
+    public static function it($context) {  return new SpecContext($context);  }
+    
+    public static function context($context) {  return self::it($context);  }
     /**
      * For setting up the spec subjects
      *

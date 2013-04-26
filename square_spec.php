@@ -1,8 +1,8 @@
 <?php
 require('testable.php');
 require('spec.php');
-require('spec_level.php');
-require('spec_plumb.php');
+require('spec_description.php');
+require('spec_context.php');
 require('spec_subject.php');
 require('spec_stub.php');
 require('spec_double.php');

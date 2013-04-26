@@ -10,7 +10,7 @@ namespace SquareSpec;
  * The spec description 
  * --- proove horizontals :) , if you don't get it, nevermind ;)
  */
-class SpecLevel implements Testable {
+class SpecDescription implements Testable {
 
     /**
      * @var string The description text
@@ -28,7 +28,7 @@ class SpecLevel implements Testable {
      * Constructor
      *
      * @param string $desc The spec description
-     * @return SpecLevel
+     * @return SpecDescription
      */ 
     public function __construct($desc) {
         $this->desc     = $desc;
@@ -40,9 +40,9 @@ class SpecLevel implements Testable {
      * The method to receive / wrap all the children descriptions and contexts
      *
      * @param mixed $v,... List of descriptions and contexts. The first param could be a call to Spec::before which should ultimately return an associative array containing the test subjects.
-     * @return SpecLevel
+     * @return SpecDescription
      */
-    public function &spec() {
+    public function &do() {
         $args = func_get_args();
         if (is_array($args[0])) {
             $before = array_shift($args);

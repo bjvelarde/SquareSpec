@@ -1,7 +1,7 @@
 <?php
 //--------------------------------------------------------------------------------------------------------------------------------
 // 
-//    From console, run: $> php square.php  
+//    From console, run: $> php square.php
 //    to test all <spec-name>.specs.php files on your designated 'specs' folder (see: square.php)
 //
 //    To test a single spec: $>php square.php <my-spec>
@@ -28,7 +28,7 @@ class Bowling {
 */
 include('../square_spec.php');
 
-use SquareSpec\Spec as Spec;
+use SquareSpec\Spec;
 
 Spec::describe('Bowling')->spec(
     Spec::before(
