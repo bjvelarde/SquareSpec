@@ -46,6 +46,17 @@ final class Spec {
         }
         return $subjects;
     }
+    
+    public static function after() {
+        $args = func_get_args();
+        $subjects = array();
+        foreach ($args as $arg) {
+            if ($arg instanceof SpecCleanUp) {
+                $subjects[] = $arg;
+            }
+        }
+        return $subjects;        
+    }
     /**
      * Wrap a spec double
      *
@@ -70,6 +81,8 @@ final class Spec {
      * @return SpecVar
      */     
     public static function let($var) { return new SpecVar($var); }
+    
+    public static function cleanup($var) { return new SpecCleanUp($var); }
     
     private function __construct() {}
     

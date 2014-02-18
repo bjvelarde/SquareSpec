@@ -46,7 +46,7 @@ class SpecContext implements Testable {
      * @param callback $callback 
      * @return SpecContext
      */
-    public function &do($callback) {
+    public function &so($callback) {
         $this->callback = $callback;
         $r      = new ReflectionFunction($callback);
         $args   = $r->getParameters();

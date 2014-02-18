@@ -30,20 +30,20 @@ include('../square_spec.php');
 
 use SquareSpec as SQ;
 
-SQ\describe('Bowling')->spec(
+SQ\describe('Bowling')->do(
     SQ\before(
         SQ\let('bowling')->be(new Bowling)
     ),
-    SQ\describe('#score')->spec(
-        SQ\it("returns 0 for all gutter game")->spec(function($bowling) {
+    SQ\describe('#score')->do(
+        SQ\it("returns 0 for all gutter game")->do(function($bowling) {
             for ($i = 0; $i < 20; $i++) {
                 $bowling->hit(0);
             }
             $bowling->score->should->equals(0);
         })
     ),
-    SQ\describe('#strike')->spec(
-        SQ\it("returns 'strike' if all 10 pins are down")->spec(function($bowling) {
+    SQ\describe('#strike')->do(
+        SQ\it("returns 'strike' if all 10 pins are down")->do(function($bowling) {
             $bowling->hit(10);
             $bowling->strike->should->be();
         })
