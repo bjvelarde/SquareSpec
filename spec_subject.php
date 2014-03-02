@@ -183,6 +183,16 @@ class SpecSubject implements IteratorAggregate, Countable, ArrayAccess {
      * @return mixed
      */
     public function getSubject() { return $this->subject; }
+    
+    public function cleanUp(SpecCleanUp $cleanup) {
+        if ($cleanup->action == 'nullify') {
+            $this->subject = NULL;
+            return TRUE;
+        } elseif ($cleanup->action == 'call') {
+            list($method, $args) = $cleanup->args;
+            return call_user_func_array(array($this->subject, $method), $args);
+        }
+    }
     /**
      * Evaluate the returned value and store the results
      *

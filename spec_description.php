@@ -7,10 +7,10 @@
  */
 namespace SquareSpec;
 /**
- * The spec description 
+ * The spec description
  * --- proove horizontals :) , if you don't get it, nevermind ;)
  */
-class SpecLevel implements Testable {
+class SpecDescription implements Testable {
 
     /**
      * @var string The description text
@@ -18,35 +18,43 @@ class SpecLevel implements Testable {
     private $desc;
     /**
      * @var array To stack children descriptions and contexts
-     */    
+     */
     private $contexts;
     /**
      * @var array The test subjects
-     */        
+     */
     private $subjects;
+    /**
+     * @var array The test subject cleanup
+     */
+    private $teardown;
     /**
      * Constructor
      *
      * @param string $desc The spec description
-     * @return SpecLevel
-     */ 
+     * @return SpecDescription
+     */
     public function __construct($desc) {
         $this->desc     = $desc;
         $this->contexts =
+        $this->teardown =
         $this->subjects = array();
-    }    
+    }
 
     /**
      * The method to receive / wrap all the children descriptions and contexts
      *
      * @param mixed $v,... List of descriptions and contexts. The first param could be a call to Spec::before which should ultimately return an associative array containing the test subjects.
-     * @return SpecLevel
+     * @return SpecDescription
      */
-    public function &spec() {
+    public function &with() {
         $args = func_get_args();
         if (is_array($args[0])) {
             $before = array_shift($args);
             $this->subjects = $this->wrapSubjects($before);
+        }
+        if (is_array($args[count($args)])) {
+            $this->teardown = array_pop($args);
         }
         foreach ($args as $arg) {
             if ($arg instanceof Testable) {
@@ -73,7 +81,7 @@ class SpecLevel implements Testable {
      * Get the description
      *
      * @return string
-     */    
+     */
     //public function getDescription() { return $this->desc; }
     /**
      * Run all test
@@ -81,15 +89,22 @@ class SpecLevel implements Testable {
      * @return array
      */
     public function test() {
-        foreach ($this->contexts as $desc => $context) {            
-            $context->test();
+        if ($this->contexts) {
+            foreach ($this->contexts as $desc => $context) {
+                $context->test();
+            }
+        }    
+        if ($this->teardown) {
+            foreach ($this->teardown as $cleanup) {                
+                $this->subjects[$name]->cleanUp($cleanup);
+            }            
         }
     }
     /**
      * Get the description
      *
      * @return string
-     */       
+     */
     public function getDescription() { return $this->desc; }
     /**
      * Wrap each subjects as SpecSubject objects
@@ -101,6 +116,6 @@ class SpecLevel implements Testable {
             $subjects[$k] = ($subject instanceof SpecSubject) ? $subject : new SpecSubject($subject);
         }
         return $subjects;
-    }    
+    }
 }
 ?>

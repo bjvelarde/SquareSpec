@@ -1,7 +1,7 @@
 <?php
 //--------------------------------------------------------------------------------------------------------------------------------
 // 
-//    From console, run: $> php square.php  
+//    From console, run: $> php square.php
 //    to test all <spec-name>.specs.php files on your designated 'specs' folder (see: square.php)
 //
 //    To test a single spec: $>php square.php <my-spec>
@@ -28,25 +28,29 @@ class Bowling {
 */
 include('../square_spec.php');
 
-use SquareSpec\Spec as Spec;
+use SquareSpec\Spec;
 
-Spec::describe('Bowling')->spec(
+Spec::describe('Bowling')->with(
     Spec::before(
         Spec::let('bowling')->be(new Bowling)
     ),
-    Spec::describe('#score')->spec(
-        Spec::it("returns 0 for all gutter game")->spec(function($bowling) {
+    Spec::describe('#score')->with(
+        Spec::it("returns 0 for all gutter game")->so(function($bowling) {
             for ($i = 0; $i < 20; $i++) {
                 $bowling->hit(0);
             }
             $bowling->score->should->equals(0);
         })
     ),
-    Spec::describe('#strike')->spec(
-        Spec::it("returns 'strike' if all 10 pins are down")->spec(function($bowling) {
+    Spec::describe('#strike')->with(
+        Spec::it("returns 'strike' if all 10 pins are down")->so(function($bowling) {
             $bowling->hit(10);
             $bowling->strike->should->be();
         })
+    ),
+    Spec::after(
+        Spec::cleanup('bowling')->nullify(),
+        Spec::cleanup('db')->call('close')
     )
 )->test();
 ?>
