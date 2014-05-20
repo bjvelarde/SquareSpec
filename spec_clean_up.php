@@ -22,7 +22,7 @@ class SpecCleanUp {
 
     public function &call($method, $args=array()) { 
         $this->action = 'call';
-        $this->args   = $args;        
+        $this->args   = array($method, $args);        
         return $this;
     }    
     
